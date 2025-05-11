@@ -66,6 +66,39 @@ events.on(eventTriggers.previewChanged, (item: IProductItem) => {
     });
 });
 
+events.on(eventTriggers.basketOpen, () => {
+    basket.selected = appData.order.items;
+    modal.render({
+        content: basket.render({
+            total: appData.getTotal()
+        }),
+    });
+});
+
+events.on(eventTriggers.basketChanged, () => {
+    basket.items = appData.basket.map((item, index) => {
+        const card = new Card(cloneTemplate(cardBasketModal), {
+            onClick:() => {
+                appData.removeFromBasket(item);
+                basket.selected = appData.order.items;
+                basket.total = appData.getTotal();
+            }
+        });
+        return card.render({
+            title: item.title,
+            price: item.price,
+            index: index +1,
+        });
+    });
+    page.counter = appData.basket.length;
+    basket.total = appData.getTotal();
+});
+
+events.on(eventTriggers.cardAdd, (item: IProductItem) => {
+    appData.addToBasket(item);
+    modal.close();
+});
+
 api.getCardList()
     .then(appData.setCatalog.bind(appData))
     .catch(err => { console.error(err);})
