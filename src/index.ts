@@ -10,6 +10,7 @@ import { Basket } from './components/common/Basket';
 import { AppState, CatalogChangeEvent } from './components/AppData';
 import { Modal } from './components/common/Modal';
 import { Contacts, Order } from './components/Order';
+import { Success } from './components/common/Success';
 
 
 
@@ -27,6 +28,7 @@ const cardBasketModal = ensureElement<HTMLTemplateElement>('#card-basket');
 const basketTemplate = ensureElement<HTMLTemplateElement>('#basket');
 const orederTemplate = ensureElement<HTMLTemplateElement>('#order');
 const contactsTemplate = ensureElement<HTMLTemplateElement>('#contacts');
+const successTemplate = ensureElement<HTMLTemplateElement>('#success');
 
 
 const page = new Page(document.body,events);

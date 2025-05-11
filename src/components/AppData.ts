@@ -48,11 +48,72 @@ export class AppState extends Model<IAppState> {
         this.emitChanges(eventTriggers.basketChanged);
     }
 
+    clearBasket() {
+        this.basket = [];
+        this.order.items = [];
+        this.emitChanges(eventTriggers.basketChanged);
+    }
+
+    clearOrder() {
+        this.order.address = '';
+        this.order.email = '';
+        this.order.payment = '';
+        this.order.phone = '';
+        this.order.total = 0;
+    }
 
 
     checkProduct(id: string) {
         return !!this.basket.find((item) => item.id === id);
     }
 
+    validateContacts() {
+        const errors: typeof this.formErrors = {};
 
+        if (!this.order.email) {
+            errors.email = 'Необходимо указать email';
+        }
+        if (!this.order.phone) {
+            errors.phone = 'Необходимо указать телефон';
+        }
+
+        this.formErrors = errors;
+        this.events.emit(eventTriggers.formErrorsContact, this.formErrors);
+        return Object.keys(errors).length === 0;
+    }
+
+    setContactField(field: keyof IOrderForm, value: string) {
+        if ( field === 'email') {
+            this.order.email = value;
+        };
+        if ( field === 'phone') {
+            this.order.phone = value;
+        };
+        this.validateContacts();
+    };
+
+
+    validateOrder() {
+        const errors: typeof this.formErrors = {};
+        if (!this.order.payment) {
+            errors.payment = 'Необходимо выбрать способ оплаты';
+        }
+        if (!this.order.address) {
+            errors.address = 'Необходимо указать адрес';
+        }
+
+        this.formErrors = errors;
+        this.events.emit(eventTriggers.formErrorsOrder, this.formErrors);
+        return Object.keys(errors).length === 0;
+    }
+
+    setOrderField(field: keyof IOrderForm, value: string) {
+        if ( field === 'payment') {
+            this.order.payment = value;
+        };
+        if ( field === 'address') {
+            this.order.address = value;
+        };
+        this.validateOrder();
+    };
 }
