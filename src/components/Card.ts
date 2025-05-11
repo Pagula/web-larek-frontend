@@ -65,15 +65,15 @@ export class Card extends Component<ICard> {
     set category(value: string) {
         this.setText(this._category, value);
         if (value === 'софт-скил') {
-            this._category.classList.add('.card__category_soft');
+            this._category.className = 'card__category card__category_soft';
         } else if (value === 'другое') {
-            this._category.classList.add('card__category_other');
+            this._category.className = 'card__category card__category_other';
         } else if (value === 'дополнительное') {
-            this._category.classList.add('card__category_additional');
+            this._category.className = 'card__category card__category_additional';
         } else if (value === 'кнопка') {
-            this._category.classList.add('card__category_button');
+            this._category.className = 'card__category card__category_button';
         } else if (value === 'хард-скил') {
-            this._category.classList.add('card__category_hard');
+            this._category.className = 'card__category card__category_hard';
         }
     }
 
