@@ -109,7 +109,7 @@ export class AppState extends Model<IAppState> {
 
     setOrderField(field: keyof IOrderForm, value: string) {
         if ( field === 'payment') {
-            this.order.payment = value;
+            this.order.payment = value as TPayment;
         };
         if ( field === 'address') {
             this.order.address = value;

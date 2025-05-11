@@ -33,7 +33,7 @@ export class Order extends Form<IOrderForm> {
         this._buttons.forEach(button => {
             button.classList.toggle('button_alt-active', button === clickedButton);
         });
-        events.emit(eventTriggers.paymentChange, { field: 'payment', valie: clickedButton.name});
+        events.emit(eventTriggers.paymentChange, { field: 'payment', value: clickedButton.name});
     };
 
     set address(address: string) {

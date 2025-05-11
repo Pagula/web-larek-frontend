@@ -31,7 +31,7 @@ const contactsTemplate = ensureElement<HTMLTemplateElement>('#contacts');
 const successTemplate = ensureElement<HTMLTemplateElement>('#success');
 
 
-const page = new Page(document.body,events);
+const page = new Page(document.body, events);
 const basket = new Basket(cloneTemplate(basketTemplate), events);
 const card = new Card(cloneTemplate(cardCatalogTemplate));
 const modal = new Modal(ensureElement<HTMLElement>('#modal-container'), events);
@@ -180,6 +180,9 @@ events.on(eventTriggers.contactsSubmit, () => {
     });
 });
 
+
+events.on(eventTriggers.modalOpen, () => { page.locked = true;});
+events.on(eventTriggers.modalClose, () => { page.locked = false;});
 
 
 api.getCardList()
