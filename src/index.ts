@@ -9,6 +9,7 @@ import { Card } from './components/Card';
 import { Basket } from './components/common/Basket';
 import { AppState, CatalogChangeEvent } from './components/AppData';
 import { Modal } from './components/common/Modal';
+import { Contacts, Order } from './components/Order';
 
 
 
@@ -24,12 +25,16 @@ const cardCatalogTemplate = ensureElement<HTMLTemplateElement>('#card-catalog');
 const cardPreviewTemplate = ensureElement<HTMLTemplateElement>('#card-preview');
 const cardBasketModal = ensureElement<HTMLTemplateElement>('#card-basket');
 const basketTemplate = ensureElement<HTMLTemplateElement>('#basket');
+const orederTemplate = ensureElement<HTMLTemplateElement>('#order');
+const contactsTemplate = ensureElement<HTMLTemplateElement>('#contacts');
 
 
 const page = new Page(document.body,events);
 const basket = new Basket(cloneTemplate(basketTemplate), events);
 const card = new Card(cloneTemplate(cardCatalogTemplate));
 const modal = new Modal(ensureElement<HTMLElement>('#modal-container'), events);
+const order = new Order(cloneTemplate(orederTemplate), events);
+const contacts = new Contacts(cloneTemplate(contactsTemplate), events);
 
 
 events.on<CatalogChangeEvent>(eventTriggers.itemChanged, () => {
