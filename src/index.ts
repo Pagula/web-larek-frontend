@@ -86,9 +86,7 @@ events.on(eventTriggers.basketChanged, () => {
     basket.items = appData.basket.map((item, index) => {
         const card = new Card(cloneTemplate(cardBasketModal), {
             onClick:() => {
-                appData.removeFromBasket(item);
-                basket.selected = appData.order.items;
-                basket.total = appData.getTotal();
+                events.emit(eventTriggers.cardRemove, item); // Заменил прямой вызов на генерацию события
             }
         });
         return card.render({
