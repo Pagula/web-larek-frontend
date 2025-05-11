@@ -106,6 +106,82 @@ events.on(eventTriggers.cardAdd, (item: IProductItem) => {
     modal.close();
 });
 
+events.on(eventTriggers.cardRemove, (item: IProductItem) => {
+    appData.removeFromBasket(item);
+    events.emit(eventTriggers.basketOpen);
+});
+
+
+events.on(eventTriggers.orderOpen, () => {
+    modal.render({
+        content: order.render({
+            payment: '',
+            address: '',
+            valid: false,
+            errors: [],
+        }),
+    });
+});
+
+events.on(eventTriggers.formErrorsOrder, (errors: FormErrors) => {
+    const { payment, address } = errors;
+    order.valid = !payment && !address;
+    order.errors = Object.values({ payment, address }).filter(i => !!i).join('; ');
+});
+
+events.on(eventTriggers.paymentChange, (data: { field: keyof IOrderForm; value: string }) => {
+    appData.setOrderField(data.field, data.value);
+});
+events.on(eventTriggers.orderChanged, (data: { field: keyof IOrderForm; value: string}) => {
+    appData.setOrderField(data.field, data.value);
+});
+
+
+events.on(eventTriggers.orderSubmit, () => {
+    modal.render({
+        content: contacts.render({
+            email: '',
+            phone: '',
+            valid: false,
+            errors: [],
+        }),
+    });
+});
+
+events.on(eventTriggers.formErrorsContact, (errors: FormErrors) => {
+    const { email, phone } = errors;
+    contacts.valid = !email && !phone;
+    contacts.errors = Object.values({ email, phone }).filter(i => !!i).join('; ');
+});
+
+events.on(eventTriggers.contactsChanged, (data: { field: keyof IOrderForm; value: string }) => {
+    appData.setContactField(data.field, data.value);
+});
+
+events.on(eventTriggers.contactsSubmit, () => {
+    api.orderCards(appData.order)
+    .then((result) => {
+        const success = new Success(cloneTemplate(successTemplate), {
+            onClick: () => {
+                modal.close();
+            }
+        });
+        modal.render({
+            content: success.render({
+                total: appData.getTotal()
+            })
+        });
+        appData.clearBasket();
+        appData.clearOrder();
+        page.counter = appData.basket.length;
+    })
+    .catch(err => {
+        console.error(err);
+    });
+});
+
+
+
 api.getCardList()
     .then(appData.setCatalog.bind(appData))
     .catch(err => { console.error(err);})
